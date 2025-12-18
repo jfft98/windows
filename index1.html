@@ -57,7 +57,9 @@ y permitirte disfrutar el momento con tranquilidad.🎄<br>
   <!-- CTA -->
   <section class="cta-section">
   <button class="btn" id="btnSorpresa">SORPRESA 🎁</button>
+  <button class="btn btn-music" id="btnMusic">🔊 Reproducir música</button>
 </section>
+
 
 <!-- ALERTA SORPRESA -->
 <div class="overlay" id="overlay">
@@ -70,8 +72,10 @@ y permitirte disfrutar el momento con tranquilidad.🎄<br>
 
   <div id="snowfall"></div>
 
-  <audio autoplay loop id="myAudio">
-      <source src="/assets/Music.mp3" type="audio/mpeg">
+  <audio id="myAudio" loop>
+  <source src="assets/Music.mp3" type="audio/mpeg">
+</audio>
+
 
   <script src="script.js"></script>
 </body>
