@@ -85,3 +85,23 @@ overlay.addEventListener('click', e => {
     clearInterval(intervalo);
   }
 });
+
+
+
+const audio = document.getElementById('myAudio');
+const btnMusic = document.getElementById('btnMusic');
+
+let reproduciendo = false;
+
+btnMusic.addEventListener('click', () => {
+  if(!reproduciendo){
+    audio.play();
+    btnMusic.textContent = '🔇 Pausar música';
+    reproduciendo = true;
+  } else {
+    audio.pause();
+    btnMusic.textContent = '🔊 Reproducir música';
+    reproduciendo = false;
+  }
+});
+    
