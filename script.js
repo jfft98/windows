@@ -41,3 +41,47 @@ document.addEventListener('DOMContentLoaded', function () {
         const audio = document.getElementById('myAudio');
         audio.play();
     });
+
+
+
+    const btn = document.getElementById('btnSorpresa');
+const overlay = document.getElementById('overlay');
+const contador = document.getElementById('contador');
+
+const fechaObjetivo = new Date('2025-12-25T00:00:00');
+let intervalo;
+
+btn.addEventListener('click', () => {
+  overlay.style.display = 'flex';
+  actualizarContador();
+  intervalo = setInterval(actualizarContador, 1000);
+});
+
+function actualizarContador(){
+  const ahora = new Date();
+  const diff = fechaObjetivo - ahora;
+
+  if(diff <= 0){
+    contador.textContent = '🎄 ¡Ya es Navidad!';
+    clearInterval(intervalo);
+    return;
+  }
+
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutos = Math.floor((diff / (1000 * 60)) % 60);
+  const segundos = Math.floor((diff / 1000) % 60);
+
+  contador.textContent =
+    `${dias}d ${String(horas).padStart(2,'0')}:` +
+    `${String(minutos).padStart(2,'0')}:` +
+    `${String(segundos).padStart(2,'0')}`;
+}
+
+// cerrar tocando fuera
+overlay.addEventListener('click', e => {
+  if(e.target === overlay){
+    overlay.style.display = 'none';
+    clearInterval(intervalo);
+  }
+});
