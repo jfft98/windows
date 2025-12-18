@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>jjma</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+  height:100%;
+  font-family:'Playfair Display',serif;
+  scroll-behavior:smooth;
+}
+
+/* BLOQUEO SOLO CUANDO TOCA */
+body.freeze{
+  overflow:hidden;
+}
+
+/* FONDO NAVIDAD */
+body{
+  background:
+    linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+    url('https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1920&q=80')
+    center/cover no-repeat fixed;
+  color:#fff;
+}
+
+section{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px;
+}
+
+.box{
+  max-width:720px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:1.2s ease;
+}
+
+.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+h1{font-size:2.4rem;font-weight:400}
+p{margin-top:20px;font-size:1.15rem}
+
+input{
+  margin-top:30px;
+  background:transparent;
+  border:none;
+  border-bottom:2px solid #ffd27d;
+  color:#fff;
+  font-size:1.3rem;
+  text-align:center;
+  width:260px;
+  outline:none;
+}
+
+.hint{
+  margin-top:20px;
+  font-size:.95rem;
+  color:#ffd27d;
+  display:none;
+}
+
+/* BOTÓN */
+#trollButton{
+  display:none;
+  padding:14px 32px;
+  border:2px solid #ffd27d;
+  background:none;
+  color:#ffd27d;
+  cursor:pointer;
+  position:fixed;
+  font-size:1.1rem;
+  transition:top .25s ease,left .25s ease;
+}
+
+/* OCULTOS */
+#errorBox,#scrollTroll,#finalMessage{
+  display:none;
+}
+
+#scrollTroll{min-height:200vh}
+
+#finalMessage{
+  position:fixed;
+  bottom:40px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:1.3rem;
+  color:#ffd27d;
+  opacity:0;
+  transition:opacity 1.5s;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<section><div class="box"><h1>Esto no se abre de inmediato.</h1><p>Ni siquiera en Navidad.</p></div></section>
+<section><div class="box"><h1>No todo lo importante<br>hace ruido.</h1><p>A veces solo abriga.</p></div></section>
+<section><div class="box"><h1>Si estás aquí,</h1><p>es porque incluso en diciembre sigues dando más de lo que te toca.</p></div></section>
+
+<!-- GATE -->
+<section id="gate">
+  <div class="box">
+    <h1>Recuérdalo bien</h1>
+    <p>My name is?</p>
+    <input id="key" autocomplete="off">
+    <div id="hint" class="hint">empieza con la letra W</div>
+  </div>
+</section>
+
+<!-- TROLL 1 -->
+<section id="troll1">
+  <div class="box">
+    <p>Abre tu regalo 🎁</p>
+  </div>
+</section>
+
+<button id="trollButton">Abrir</button>
+
+<!-- TROLL 2 -->
+<section id="errorBox">
+  <div class="box visible">
+    <h1>Error navideño</h1>
+    <p>Demasiado trabajo este año…<br>Recarga.</p>
+    <button onclick="location.reload()">Recargar</button>
+  </div>
+</section>
+
+<!-- TROLL 3 -->
+<section id="scrollTroll">
+  <div class="box visible">
+    <p>Solo un poco más abajo…</p>
+  </div>
+</section>
+
+<div id="finalMessage">
+  Era broma 😌<br>
+  Esto no es un reto.<br>
+  Es un descanso.<br><br>
+  Feliz Navidad 🎄
+</div>
+
+<script>
+/* REVEAL */
+document.querySelectorAll('.box').forEach(b=>{
+  new IntersectionObserver(e=>{
+    if(e[0].isIntersecting) b.classList.add('visible');
+  },{threshold:.3}).observe(b);
+});
+
+/* ESTADO */
+let stage=0;
+
+/* BLOQUEAR SCROLL AL LLEGAR AL INPUT */
+new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting && stage===0){
+    document.body.classList.add('freeze');
+  }
+},{threshold:.8}).observe(document.getElementById('gate'));
+
+/* HINT */
+setTimeout(()=>hint.style.display='block',10000);
+
+/* CLAVE */
+key.addEventListener('input',()=>{
+  if(key.value.toLowerCase()==='windows' && stage===0){
+    stage=1;
+    document.body.classList.remove('freeze'); // libera scroll
+  }
+});
+
+/* MOSTRAR BOTÓN SOLO AL LLEGAR */
+new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting && stage===1){
+    stage=2;
+    trollButton.style.display='block';
+    moveButton();
+  }
+},{threshold:.6}).observe(document.getElementById('troll1'));
+
+/* BOTÓN QUE SALTA */
+let attempts=0;
+function moveButton(){
+  const pad=20;
+  const maxX=window.innerWidth-trollButton.offsetWidth-pad;
+  const maxY=window.innerHeight-trollButton.offsetHeight-pad;
+  trollButton.style.left=Math.random()*maxX+'px';
+  trollButton.style.top=Math.random()*maxY+'px';
+}
+
+['mouseenter','click','touchstart'].forEach(evt=>{
+  trollButton.addEventListener(evt,()=>{
+    if(stage!==2) return;
+    attempts++;
+    if(attempts>=5){
+      stage=3;
+      trollButton.style.display='none';
+      errorBox.style.display='flex';
+    }else{
+      moveButton();
+    }
+  });
+});
+
+/* SCROLL FINAL */
+window.addEventListener('scroll',()=>{
+  if(stage===3){
+    errorBox.style.display='none';
+    scrollTroll.style.display='block';
+
+    clearTimeout(window.scrollTimer);
+    window.scrollTimer=setTimeout(()=>{
+      stage=4;
+      finalMessage.style.display='block';
+      finalMessage.style.opacity=1;
+    },1200);
+  }
+});
+</script>
+
+</body>
+</html>
