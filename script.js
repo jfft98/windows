@@ -115,4 +115,3 @@ btnRegalo.addEventListener('click', () => {
   window.location.href = 'https://jfft98.github.io/windows/regalo.html';
 });
 
-
