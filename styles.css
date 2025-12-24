@@ -154,7 +154,7 @@ body {
 
 
 .btn {
-    width: 100vw; 
+  width: 100%;
   color: rgb(0, 15, 132);
   color: #000000;
   border: none;
@@ -286,3 +286,6 @@ max-width: 220px;
 }
 
 
+.btn-regalo {
+  display: none;
+}
