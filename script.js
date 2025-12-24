@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 const overlay = document.getElementById('overlay');
 const contador = document.getElementById('contador');
 
-const fechaObjetivo = new Date('2025-12-25T00:00:00');
+const fechaObjetivo = new Date('2025-12-24T00:00:00');
 let intervalo;
 
 btn.addEventListener('click', () => {
@@ -62,10 +62,12 @@ function actualizarContador(){
   const diff = fechaObjetivo - ahora;
 
   if(diff <= 0){
-    contador.textContent = '🎄 ¡Ya es Navidad!';
-    clearInterval(intervalo);
-    return;
-  }
+  contador.textContent = '🎄 ¡Ya es Navidad!';
+  btnRegalo.style.display = 'inline-block';
+  clearInterval(intervalo);
+  return;
+}
+
 
   const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
   const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
@@ -105,3 +107,11 @@ btnMusic.addEventListener('click', () => {
   }
 });
     
+
+const btnRegalo = document.getElementById('btnRegalo');
+
+btnRegalo.addEventListener('click', () => {
+  // PEGAR LINK PAGINA REGALO
+  window.location.href = 'https://jfft98.github.io/windows/regalo.html';
+});
+
