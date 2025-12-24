@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 const overlay = document.getElementById('overlay');
 const contador = document.getElementById('contador');
 
-const fechaObjetivo = new Date('2025-12-24T00:00:00');
+const fechaObjetivo = new Date('2025-12-25T00:00:00');
 let intervalo;
 
 btn.addEventListener('click', () => {
@@ -114,4 +114,5 @@ btnRegalo.addEventListener('click', () => {
   // PEGAR LINK PAGINA REGALO
   window.location.href = 'https://jfft98.github.io/windows/regalo.html';
 });
+
 
